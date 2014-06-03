@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartSystems\TagsBundle\Form\Type;
+namespace SmartInformationSystems\TagsBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityManager;
 
-use SmartSystems\TagsBundle\Entity\TagRelation;
+use SmartInformationSystems\TagsBundle\Entity\TagRelation;
 
 /**
  * Тип поля - "теги".
