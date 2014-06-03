@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
+        <body>
+            <trans-unit id="Created At">
+                <source>Created At</source>
+                <target>Дата создания</target>
+            </trans-unit>
+            <trans-unit id="Updated At">
+                <source>Updated At</source>
+                <target>Дата обновления</target>
+            </trans-unit>
+
+            <trans-unit id="Title">
+                <source>Title</source>
+                <target>Название</target>
+            </trans-unit>
+            <trans-unit id="Relations">
+                <source>Relations</source>
+                <target>Связи</target>
+            </trans-unit>
+
+            <trans-unit id="Tag List">
+                <source>Tag List</source>
+                <target>Теги</target>
+            </trans-unit>
+            <trans-unit id="Tags">
+                <source>Tags</source>
+                <target>Теги</target>
+            </trans-unit>
+
+            <trans-unit id="Moizal\\TrainerBundle\\Entity\\Exercise">
+                <source>Moizal\\TrainerBundle\\Entity\\Exercise</source>
+                <target>Теги</target>
+            </trans-unit>
+            <trans-unit id="Related object class">
+                <source>Related object class</source>
+                <target>Объект</target>
+            </trans-unit>
+            <trans-unit id="Related object title">
+                <source>Related object title</source>
+                <target>Название</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -1,0 +1,21 @@
+parameters:
+#    smart_systems_tags.example.class: SmartSystems\TagsBundle\Example
+
+services:
+    smart_systems_tags.form.type.tags:
+        class: SmartSystems\TagsBundle\Form\Type\TagsType
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+        tags:
+            - { name: form.type, alias: sis_tags_type }
+    smart_systems_tags.form.type.tag_relations:
+        class: SmartSystems\TagsBundle\Form\Type\TagRelationsType
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+        tags:
+            - { name: form.type, alias: sis_tag_relations_type }
+
+    smart_systems_file.doctrine.postLoad:
+        class: SmartSystems\TagsBundle\EventListener\DoctrineListener
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }

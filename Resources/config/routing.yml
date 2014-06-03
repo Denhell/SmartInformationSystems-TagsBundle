@@ -1,0 +1,3 @@
+smart_systems_tags_search:
+    pattern:  /search
+    defaults: { _controller: SmartSystemsTagsBundle:Default:search }

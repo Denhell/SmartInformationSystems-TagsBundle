@@ -1,0 +1,81 @@
+{% block sis_tags_type_widget %}
+    {% spaceless %}
+        {{ block('form_widget_simple') }}
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var tempID = '#{{ id }}';
+                $(tempID).select2({
+                    tags: true,
+                    tokenSeparators: [','],
+                    minimumInputLength: 2,
+                    initSelection : function (element, callback) {
+                        var data = [];
+                        $(element.val().split(',')).each(function () {
+                            data.push({id: this, text: this});
+                        });
+                        callback(data);
+                    },
+                    ajax: {
+                        url: '{{ path('smart_systems_tags_search') }}',
+                        dataType: 'json',
+                        data: function(term) {
+                            return {
+                                q: term
+                            };
+                        },
+                        results: function(data) {
+                            var res = [];
+                            for (var i=0; i<data.length; i++) {
+                                res.push({id: data[i], text: data[i]});
+                            }
+                            return {results: res};
+                        }
+                    },
+                    createSearchChoice: function(term) {
+                        return {
+                            id: term,
+                            text: term
+                        };
+                    }
+                });
+                //$(tempID).on('change', function() {
+                //    $(tempID).html($(tempID).val());
+                //});
+                $(tempID).select2('container').find('ul.select2-choices').sortable({
+                    containment: 'parent',
+                    start: function() {
+                        $(tempID).select2('onSortStart');
+                    },
+                    update: function() {
+                        $(tempID).select2('onSortEnd');
+                    }
+                });
+            });
+        </script>
+    {% endspaceless %}
+{% endblock %}
+
+{% block sis_tag_relations_type_widget %}
+    {% spaceless %}
+        {% for o in objects %}
+            {% if loop.first %}
+                <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>{{ 'Related object class'|trans({}, 'SmartSystemsTagsBundle') }}</th>
+                        <th>{{ 'Related object title'|trans({}, 'SmartSystemsTagsBundle') }}</th>
+                    </tr>
+                </thead>
+            {% endif %}
+                <tr>
+                    <td>{{ o.entityClass|trans }}</td>
+                    <td><a href="{{ path(o.editRoute, {'id': o.entity.getId}) }}">{{ o.entity }}</a></td>
+                </tr>
+            {% if loop.last %}
+                </table>
+            {% endif %}
+        {% else %}
+            Связей нет
+        {% endfor %}
+    {% endspaceless %}
+{% endblock %}
