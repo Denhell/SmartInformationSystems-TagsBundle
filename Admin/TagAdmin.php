@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartSystems\TagsBundle\Admin;
+namespace SmartInformationSystems\TagsBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
