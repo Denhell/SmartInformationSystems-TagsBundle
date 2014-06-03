@@ -16,7 +16,7 @@
                         callback(data);
                     },
                     ajax: {
-                        url: '{{ path('smart_systems_tags_search') }}',
+                        url: '{{ path('smart_information_systems_tags_search') }}',
                         dataType: 'json',
                         data: function(term) {
                             return {
@@ -62,8 +62,8 @@
                 <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>{{ 'Related object class'|trans({}, 'SmartSystemsTagsBundle') }}</th>
-                        <th>{{ 'Related object title'|trans({}, 'SmartSystemsTagsBundle') }}</th>
+                        <th>{{ 'Related object class'|trans({}, 'SmartInformationSystemsTagsBundle') }}</th>
+                        <th>{{ 'Related object title'|trans({}, 'SmartInformationSystemsTagsBundle') }}</th>
                     </tr>
                 </thead>
             {% endif %}
