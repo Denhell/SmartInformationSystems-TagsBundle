@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartSystems\TagsBundle\EventListener;
+namespace SmartInformationSystems\TagsBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
