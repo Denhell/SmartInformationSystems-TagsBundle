@@ -1,12 +1,12 @@
 <?php
 
-namespace SmartSystems\TagsBundle\Common;
+namespace SmartInformationSystems\TagsBundle\Common;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 
-use SmartSystems\TagsBundle\Entity\Tag;
-use SmartSystems\TagsBundle\Entity\TagRepository;
+use SmartInformationSystems\TagsBundle\Entity\Tag;
+use SmartInformationSystems\TagsBundle\Entity\TagRepository;
 
 /**
  * Абстрактный класс сущностей с поддержкой тегов.
@@ -85,7 +85,7 @@ abstract class AbstractTaggedEntity
 
             if ($em) {
                 /** @var TagRepository $tagRepository */
-                $tagRepository = $em->getRepository('SmartSystemsTagsBundle:Tag');
+                $tagRepository = $em->getRepository('SmartInformationSystemsTagsBundle:Tag');
                 $tagRepository->getForEntity($this);
                 $this->setTags($tagRepository->getForEntity($this));
             } else {
