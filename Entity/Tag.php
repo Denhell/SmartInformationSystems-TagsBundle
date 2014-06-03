@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartSystems\TagsBundle\Entity;
+namespace SmartInformationSystems\TagsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Тег.
  *
- * @ORM\Entity(repositoryClass="SmartSystems\TagsBundle\Entity\TagRepository")
+ * @ORM\Entity(repositoryClass="SmartInformationSystems\TagsBundle\Entity\TagRepository")
  * @ORM\Table(name="sis_tag")
  * @ORM\HasLifecycleCallbacks()
  */
