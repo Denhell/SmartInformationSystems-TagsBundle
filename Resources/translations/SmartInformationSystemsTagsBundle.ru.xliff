@@ -28,19 +28,6 @@
                 <source>Tags</source>
                 <target>Теги</target>
             </trans-unit>
-
-            <trans-unit id="Moizal\\TrainerBundle\\Entity\\Exercise">
-                <source>Moizal\\TrainerBundle\\Entity\\Exercise</source>
-                <target>Теги</target>
-            </trans-unit>
-            <trans-unit id="Related object class">
-                <source>Related object class</source>
-                <target>Объект</target>
-            </trans-unit>
-            <trans-unit id="Related object title">
-                <source>Related object title</source>
-                <target>Название</target>
-            </trans-unit>
         </body>
     </file>
 </xliff>
