@@ -1,11 +1,11 @@
 <?php
 
-namespace SmartSystems\TagsBundle\Controller;
+namespace SmartInformationSystems\TagsBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-use SmartSystems\TagsBundle\Entity\TagRepository;
+use SmartInformationSystems\TagsBundle\Entity\TagRepository;
 
 class DefaultController extends Controller
 {
@@ -40,7 +40,7 @@ class DefaultController extends Controller
     private function getRepository()
     {
         if ($this->repository === NULL) {
-            $this->repository = $this->getDoctrine()->getRepository('SmartSystemsTagsBundle:Tag');
+            $this->repository = $this->getDoctrine()->getRepository('SmartInformationSystemsTagsBundle:Tag');
         }
 
         return $this->repository;
