@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartSystems\TagsBundle\Entity;
+namespace SmartInformationSystems\TagsBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
