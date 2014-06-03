@@ -1,13 +1,13 @@
 <?php
 
-namespace SmartSystems\TagsBundle\Entity;
+namespace SmartInformationSystems\TagsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Тег.
  *
- * @ORM\Entity(repositoryClass="SmartSystems\TagsBundle\Entity\TagRelationRepository")
+ * @ORM\Entity(repositoryClass="SmartInformationSystems\TagsBundle\Entity\TagRelationRepository")
  * @ORM\Table(
  *   name="sis_tag_relation",
  *   uniqueConstraints={@ORM\UniqueConstraint(name="ui_relation", columns={"tag_id", "entity_class", "entity_id"})},
