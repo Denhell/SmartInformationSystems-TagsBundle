@@ -1,14 +1,14 @@
 <?php
 
-namespace SmartSystems\TagsBundle\Form\DataTransformer;
+namespace SmartInformationSystems\TagsBundle\Form\DataTransformer;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\DataTransformerInterface;
 
-use SmartSystems\TagsBundle\Entity\Tag;
-use SmartSystems\TagsBundle\Entity\TagRelation;
-use SmartSystems\TagsBundle\Entity\TagRepository;
-use SmartSystems\TagsBundle\Entity\TagRelationRepository;
+use SmartInformationSystems\TagsBundle\Entity\Tag;
+use SmartInformationSystems\TagsBundle\Entity\TagRelation;
+use SmartInformationSystems\TagsBundle\Entity\TagRepository;
+use SmartInformationSystems\TagsBundle\Entity\TagRelationRepository;
 
 class TagsTransformer implements DataTransformerInterface
 {
@@ -44,7 +44,7 @@ class TagsTransformer implements DataTransformerInterface
     public function transform($value)
     {
         /** @var TagRepository $rep */
-        $rep = $this->em->getRepository('SmartSystemsTagsBundle:Tag');
+        $rep = $this->em->getRepository('SmartInformationSystemsTagsBundle:Tag');
 
         $value = array();
 
@@ -77,10 +77,10 @@ class TagsTransformer implements DataTransformerInterface
         }
 
         /** @var TagRepository $rep */
-        $rep = $this->em->getRepository('SmartSystemsTagsBundle:Tag');
+        $rep = $this->em->getRepository('SmartInformationSystemsTagsBundle:Tag');
 
         /** @var TagRelationRepository $repRel */
-        $repRel = $this->em->getRepository('SmartSystemsTagsBundle:TagRelation');
+        $repRel = $this->em->getRepository('SmartInformationSystemsTagsBundle:TagRelation');
 
         $oldRelations = $repRel->getForEntity($this->relativeEntity);
 
