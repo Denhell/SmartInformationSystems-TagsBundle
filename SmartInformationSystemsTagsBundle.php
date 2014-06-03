@@ -1,9 +1,9 @@
 <?php
 
-namespace SmartSystems\TagsBundle;
+namespace SmartInformationSystems\TagsBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SmartSystemsTagsBundle extends Bundle
+class SmartInformationSystemsTagsBundle extends Bundle
 {
 }
