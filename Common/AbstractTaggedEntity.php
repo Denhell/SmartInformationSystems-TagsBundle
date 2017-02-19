@@ -1,98 +1,75 @@
 <?php
-
 namespace SmartInformationSystems\TagsBundle\Common;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManager;
-
 use SmartInformationSystems\TagsBundle\Entity\Tag;
-use SmartInformationSystems\TagsBundle\Entity\TagRepository;
 
 /**
- * Абстрактный класс сущностей с поддержкой тегов.
- *
+ * Абстрактный класс сущностей с поддержкой тегов
  */
 abstract class AbstractTaggedEntity
 {
     /**
-     * Список тегов.
+     * Список тегов
      *
      * @var ArrayCollection
      */
     private $tags;
 
-    /**
-     * Конструктор.
-     *
-     */
     public function __construct()
     {
         $this->tags = new ArrayCollection();
     }
 
     /**
-     * Добавляет тег.
-     *
+     * @return integer
+     */
+    abstract public function getId();
+
+    /**
      * @param Tag $tag Тег
      *
      * @return AbstractTaggedEntity
      */
     public function addTag(Tag $tag)
     {
-        $this->getTags()->add($tag);
+        $this->tags[] = $tag;
 
         return $this;
     }
 
     /**
-     * Устанавливает теги.
-     *
-     * @param ArrayCollection $tags Теги
+     * @param array $tags
      *
      * @return AbstractTaggedEntity
      */
-    public function setTags(ArrayCollection $tags)
+    public function setTags($tags)
     {
-        $this->tags = $tags;
+        $this->tags = new ArrayCollection();
+        foreach ($tags as $tag) {
+            $this->addTag($tag);
+        }
 
         return $this;
     }
 
     /**
-     * Удаляет тег.
-     *
      * @param Tag $tag Тег
      *
      * @return AbstractTaggedEntity
      */
     public function removeTag(Tag $tag)
     {
-        $this->getTags()->removeElement($tag);
+        $this->tags->removeElement($tag);
 
         return $this;
     }
 
     /**
-     * Возвращает теги.
-     *
-     * @param EntityManager $em Подключение к БД
-     *
      * @return ArrayCollection|Tag[]
      */
-    public function getTags(EntityManager $em = NULL)
+    public function getTags()
     {
-        if (!($this->tags instanceof ArrayCollection)) {
-
-            if ($em) {
-                /** @var TagRepository $tagRepository */
-                $tagRepository = $em->getRepository('SmartInformationSystemsTagsBundle:Tag');
-                $tagRepository->getForEntity($this);
-                $this->setTags($tagRepository->getForEntity($this));
-            } else {
-                $this->setTags(new ArrayCollection());
-            }
-        }
-
         return $this->tags;
     }
 }

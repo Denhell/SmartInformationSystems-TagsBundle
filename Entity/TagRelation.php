@@ -1,13 +1,12 @@
 <?php
-
 namespace SmartInformationSystems\TagsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Тег.
+ * Связи с тегами
  *
- * @ORM\Entity(repositoryClass="SmartInformationSystems\TagsBundle\Entity\TagRelationRepository")
+ * @ORM\Entity(repositoryClass="SmartInformationSystems\TagsBundle\Repository\TagRelationRepository")
  * @ORM\Table(
  *   name="sis_tag_relation",
  *   uniqueConstraints={@ORM\UniqueConstraint(name="ui_relation", columns={"tag_id", "entity_class", "entity_id"})},
@@ -20,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 class TagRelation
 {
     /**
-     * Идентификатор.
+     * Идентификатор
      *
      * @var int
      *
@@ -28,66 +27,64 @@ class TagRelation
      * @ORM\Column(type="integer", options={"unsigned"=true})
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
-     * Тег.
+     * Тег
      *
      * @var Tag
      *
      * @ORM\ManyToOne(targetEntity="Tag", inversedBy="relations")
-     * @ORM\JoinColumn(name="tag_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(referencedColumnName="id", nullable=false)
      */
-    protected $tag;
+    private $tag;
 
     /**
-     * Класс связанноый сущности.
+     * Класс связанноый сущности
      *
      * @var string
      *
-     * @ORM\Column(name="entity_class")
+     * @ORM\Column(type="string")
      */
-    protected $entityClass;
+    private $entityClass;
 
     /**
-     * Идентификатор связанноый сущности.
+     * Идентификатор связанноый сущности
      *
      * @var integer
      *
-     * @ORM\Column(type="integer", name="entity_id", options={"unsigned"=true})
+     * @ORM\Column(type="integer", options={"unsigned"=true})
      */
-    protected $entityId;
+    private $entityId;
 
     /**
-     * Приоритет.
+     * Приоритет
      *
      * @var integer
      *
      * @ORM\Column(type="integer")
      */
-    protected $priority;
+    private $priority;
 
     /**
-     * Дата создания.
+     * Дата создания
      *
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @ORM\Column(type="datetime")
      */
-    protected $createdAt;
+    private $createdAt;
 
     /**
-     * Дата последнего изменения.
+     * Дата последнего изменения
      *
      * @var \DateTime
      *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    protected $updatedAt;
+    private $updatedAt;
 
     /**
-     * Возвращает идентификатор.
-     *
      * @return integer
      */
     public function getId()
@@ -96,9 +93,7 @@ class TagRelation
     }
 
     /**
-     * Устанавливает класс связанной сущности.
-     *
-     * @param string $entityClass Класс связанной сущности
+     * @param string $entityClass
      *
      * @return TagRelation
      */
@@ -110,8 +105,6 @@ class TagRelation
     }
 
     /**
-     * Возвращает класс связанной сущности.
-     *
      * @return string
      */
     public function getEntityClass()
@@ -120,9 +113,7 @@ class TagRelation
     }
 
     /**
-     * Устанавливает идентификатор связанной сущности.
-     *
-     * @param integer $entityId Идентификатор связанной сущности
+     * @param integer $entityId
      *
      * @return TagRelation
      */
@@ -134,8 +125,6 @@ class TagRelation
     }
 
     /**
-     * Возвращает идентификатор связанной сущности.
-     *
      * @return integer
      */
     public function getEntityId()
@@ -144,9 +133,7 @@ class TagRelation
     }
 
     /**
-     * Устанавливает приоритет.
-     *
-     * @param integer $priority Приоритет
+     * @param integer $priority
      *
      * @return TagRelation
      */
@@ -158,27 +145,11 @@ class TagRelation
     }
 
     /**
-     * Возвращает приоритет.
-     *
      * @return integer
      */
     public function getPriority()
     {
         return $this->priority;
-    }
-
-    /**
-     * Устанавливает дату создания.
-     *
-     * @param \DateTime $createdAt Дата создания
-     *
-     * @return TagRelation
-     */
-    private function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
     }
 
     /**
@@ -192,9 +163,7 @@ class TagRelation
     }
 
     /**
-     * Устанавливает тег.
-     *
-     * @param Tag $tag Тег
+     * @param Tag $tag
      *
      * @return TagRelation
      */
@@ -206,8 +175,6 @@ class TagRelation
     }
 
     /**
-     * Возвращает тег.
-     *
      * @return Tag
      */
     public function getTag()
@@ -216,22 +183,6 @@ class TagRelation
     }
 
     /**
-     * Устанавливает дату последнего обновления.
-     *
-     * @param \DateTime $updatedAt Дата последнего обновления
-     *
-     * @return TagRelation
-     */
-    private function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Возвращает дату последнего обновления.
-     *
      * @return \DateTime
      */
     public function getUpdatedAt()
@@ -240,22 +191,18 @@ class TagRelation
     }
 
     /**
-     * Выполняется перед сохранением в БД.
-     *
      * @ORM\PrePersist
      */
     public function prePersistHandler()
     {
-        $this->setCreatedAt(new \DateTime());
+        $this->createdAt = new \DateTime();
     }
 
     /**
-     * Автоматическая установка даты обновления.
-     *
      * @ORM\PreUpdate
      */
     public function preUpdateHandler()
     {
-        $this->setUpdatedAt(new \DateTime());
+        $this->updatedAt = new \DateTime();
     }
 }

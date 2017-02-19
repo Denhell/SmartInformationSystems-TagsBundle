@@ -1,21 +1,24 @@
-parameters:
-#    smart_information_systems_tags.example.class: SmartSystems\TagsBundle\Example
-
 services:
     smart_information_systems_tags.form.type.tags:
         class: SmartInformationSystems\TagsBundle\Form\Type\TagsType
         arguments:
-            entityManager: "@doctrine.orm.entity_manager"
+            - "@doctrine.orm.entity_manager"
         tags:
-            - { name: form.type, alias: sis_tags_type }
+            - { name: form.type }
     smart_information_systems_tags.form.type.tag_relations:
         class: SmartInformationSystems\TagsBundle\Form\Type\TagRelationsType
         arguments:
-            entityManager: "@doctrine.orm.entity_manager"
+            - "@doctrine.orm.entity_manager"
         tags:
-            - { name: form.type, alias: sis_tag_relations_type }
-
-    smart_information_systems_file.doctrine.postLoad:
-        class: SmartInformationSystems\TagsBundle\EventListener\DoctrineListener
+            - { name: form.type }
+    smart_information_systems_file.doctrine.subscriber:
+        class: SmartInformationSystems\TagsBundle\EventListener\DoctrineSubscriber
         tags:
-            - { name: doctrine.event_listener, event: postLoad }
+            - { name: doctrine.event_subscriber }
+        calls:
+            - [ setTagRelationService, ['@smart_information_systems_file.tag_relation']]
+    smart_information_systems_file.tag_relation:
+        class: SmartInformationSystems\TagsBundle\Service\TagRelationService
+        lazy: true
+        arguments:
+            - "@doctrine.orm.entity_manager"

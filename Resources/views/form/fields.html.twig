@@ -1,4 +1,4 @@
-{% block sis_tags_type_widget %}
+{% block tags_widget %}
     {% spaceless %}
         {{ block('form_widget_simple') }}
         <script type="text/javascript">
@@ -16,7 +16,7 @@
                         callback(data);
                     },
                     ajax: {
-                        url: '{{ path('smart_information_systems_tags_search') }}',
+                        url: '{{ path('smart_information_systems.tags.search') }}',
                         dataType: 'json',
                         data: function(term) {
                             return {

@@ -1,20 +1,14 @@
 <?php
-
 namespace SmartInformationSystems\TagsBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityManager;
-
 use SmartInformationSystems\TagsBundle\Form\DataTransformer\TagsTransformer;
 
-/**
- * Тип поля - "теги".
- *
- */
 class TagsType extends AbstractType
 {
     /**
@@ -24,12 +18,6 @@ class TagsType extends AbstractType
      */
     private $om;
 
-    /**
-     * Конструктор.
-     *
-     * @param EntityManager $entityManager Подключение к БД
-     *
-     */
     public function __construct(EntityManager $entityManager)
     {
         $this->om = $entityManager;
@@ -58,11 +46,11 @@ class TagsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(array(
+        $resolver->setRequired([
             'relativeEntity',
-        ));
+        ]);
     }
 
     /**
@@ -71,13 +59,5 @@ class TagsType extends AbstractType
     public function getParent()
     {
         return 'text';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'sis_tags_type';
     }
 }
