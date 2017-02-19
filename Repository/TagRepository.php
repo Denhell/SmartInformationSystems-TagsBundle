@@ -1,14 +1,10 @@
 <?php
-
-namespace SmartInformationSystems\TagsBundle\Entity;
+namespace SmartInformationSystems\TagsBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use SmartInformationSystems\TagsBundle\Entity\Tag;
 
-/**
- * Репозиторий тегов.
- *
- */
 class TagRepository extends EntityRepository
 {
     /**
@@ -40,9 +36,12 @@ class TagRepository extends EntityRepository
      */
     public function getByTitle($title)
     {
-        return $this->findOneBy(array(
+        /** @var Tag $tag */
+        $tag = $this->findOneBy([
             'title' => $title,
-        ));
+        ]);
+
+        return $tag;
     }
 
     /**

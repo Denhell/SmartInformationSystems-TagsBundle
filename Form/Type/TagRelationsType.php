@@ -1,20 +1,13 @@
 <?php
-
 namespace SmartInformationSystems\TagsBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityManager;
-
 use SmartInformationSystems\TagsBundle\Entity\TagRelation;
 
-/**
- * Тип поля - "теги".
- *
- */
 class TagRelationsType extends AbstractType
 {
     /**
@@ -24,12 +17,6 @@ class TagRelationsType extends AbstractType
      */
     private $em;
 
-    /**
-     * Конструктор.
-     *
-     * @param EntityManager $entityManager Подключение к БД
-     *
-     */
     public function __construct(EntityManager $entityManager)
     {
         $this->em = $entityManager;
@@ -47,7 +34,7 @@ class TagRelationsType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['objects'] = array();
+        $view->vars['objects'] = [];
 
         /** @var TagRelation $r */
         foreach ($view->vars['value'] as $r) {
@@ -67,26 +54,11 @@ class TagRelationsType extends AbstractType
                 strtolower(get_class($entity))
             ) . '_edit';
 
-            $view->vars['objects'][] = array(
+            $view->vars['objects'][] = [
                 'entity' => $entity,
-                'entityClass' => get_class($entity),
+                'entityClass' => $r->getEntityClass(),
                 'editRoute' => $editRoute,
-            );
+            ];
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'sis_tag_relations_type';
     }
 }

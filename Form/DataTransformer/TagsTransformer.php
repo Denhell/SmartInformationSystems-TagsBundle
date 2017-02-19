@@ -1,14 +1,9 @@
 <?php
-
 namespace SmartInformationSystems\TagsBundle\Form\DataTransformer;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\DataTransformerInterface;
-
 use SmartInformationSystems\TagsBundle\Entity\Tag;
-use SmartInformationSystems\TagsBundle\Entity\TagRelation;
-use SmartInformationSystems\TagsBundle\Entity\TagRepository;
-use SmartInformationSystems\TagsBundle\Entity\TagRelationRepository;
 
 class TagsTransformer implements DataTransformerInterface
 {
@@ -17,7 +12,7 @@ class TagsTransformer implements DataTransformerInterface
      *
      * @var EntityManager
      */
-    private $em;
+    private $entityManager;
 
     /**
      * Связанный объект.
@@ -26,33 +21,28 @@ class TagsTransformer implements DataTransformerInterface
      */
     private $relativeEntity;
 
-    /**
-     * Конструктор.
-     *
-     * @param EntityManager $em Подключение к БД
-     * @param object $relativeEntity Связанный объект
-     */
-    public function __construct(EntityManager $em, $relativeEntity)
+    public function __construct(EntityManager $entityManager, $relativeEntity)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
         $this->relativeEntity = $relativeEntity;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function transform($value)
+    public function transform($tags)
     {
-        /** @var TagRepository $rep */
-        $rep = $this->em->getRepository('SmartInformationSystemsTagsBundle:Tag');
-
-        $value = array();
-
-        foreach ($rep->getForEntity($this->relativeEntity) as $r) {
-            $value[] = $r->getTitle();
+        if (empty($tags)) {
+            return '';
         }
 
-        return implode(',', $value);
+        $tagTitles = [];
+        /** @var Tag $tag */
+        foreach ($tags as $tag) {
+            $tagTitles[] = $tag->getTitle();
+        }
+
+        return implode(',', $tagTitles);
     }
 
     /**
@@ -60,60 +50,30 @@ class TagsTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        if (!$value) {
-            return array();
+        if (empty($value) || !is_string($value)) {
+            return [];
         }
 
-        if (!is_string($value)) {
-            throw new \Exception('Must be a string.');
-        }
+        $titles = explode(',', $value);
+        array_walk($titles, 'trim');
+        error_log(print_r($titles, true));
 
-        $tagTitles = array();
-        foreach (explode(',', $value) as $tag) {
-            $tag = trim($tag);
-            if (!in_array($tag, $tagTitles)) {
-                $tagTitles[] = $tag;
-            }
-        }
-
-        /** @var TagRepository $rep */
-        $rep = $this->em->getRepository('SmartInformationSystemsTagsBundle:Tag');
-
-        /** @var TagRelationRepository $repRel */
-        $repRel = $this->em->getRepository('SmartInformationSystemsTagsBundle:TagRelation');
-
-        $oldRelations = $repRel->getForEntity($this->relativeEntity);
+        $repository = $this->entityManager->getRepository(Tag::class);
+        $tags = [];
 
         $priority = 1;
-
-        $tags = array();
-
-        foreach ($tagTitles as $t) {
-            if (!($tag = $rep->getByTitle($t))) {
+        foreach ($titles as $title) {
+            if (!($tag = $repository->getByTitle($title))) {
                 $tag = new Tag();
-                $tag->setTitle($t);
-                $this->em->persist($tag);
+                $tag->setTitle($title);
+                $this->entityManager->persist($tag);
             }
-
-            if (!($r = $repRel->getOneForTagAndEntity($tag, $this->relativeEntity))) {
-                $r = new TagRelation();
-                $r->setEntityClass(get_class($this->relativeEntity));
-                $r->setEntityId($this->relativeEntity->getId());
-                $r->setTag($tag);
-            }
-
-            $r->setPriority($priority++);
-
-            $this->em->persist($r);
-
-            $oldRelations->removeElement($r);
-
+            $tag->setPriority($priority++);
             $tags[] = $tag;
         }
 
-        // Удалим ненужные связи
-        foreach ($oldRelations as $r) {
-            $this->em->remove($r);
+        foreach ($tags as $tag) {
+            error_log(print_r((string)$tag, true));
         }
 
         return $tags;

@@ -1,21 +1,20 @@
 <?php
-
 namespace SmartInformationSystems\TagsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Тег.
+ * Тег
  *
- * @ORM\Entity(repositoryClass="SmartInformationSystems\TagsBundle\Entity\TagRepository")
+ * @ORM\Entity(repositoryClass="SmartInformationSystems\TagsBundle\Repository\TagRepository")
  * @ORM\Table(name="sis_tag")
  * @ORM\HasLifecycleCallbacks()
  */
 class Tag
 {
     /**
-     * Идентификатор.
+     * Идентификатор
      *
      * @var int
      *
@@ -23,56 +22,57 @@ class Tag
      * @ORM\Column(type="integer", options={"unsigned"=true})
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
-     * Название.
+     * Название
      *
      * @var string
      *
-     * @ORM\Column(unique=true)
+     * @ORM\Column(type="string", unique=true)
      */
-    protected $title;
+    private $title;
 
     /**
-     * Дата создания.
+     * Дата создания
      *
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @ORM\Column(type="datetime")
      */
-    protected $createdAt;
+    private $createdAt;
 
     /**
-     * Дата последнего изменения.
+     * Дата последнего изменения
      *
      * @var \DateTime
      *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    protected $updatedAt;
+    private $updatedAt;
 
     /**
-     * Связи.
+     * Связи
      *
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="TagRelation", mappedBy="tag", cascade="all", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="TagRelation", mappedBy="tag")
      */
-    protected $relations;
+    private $relations;
 
     /**
-     * Конструктор.
+     * Приоритет. Не сохраняется в БД
      *
+     * @var integer
      */
+    private $priority;
+
     public function __construct()
     {
         $this->relations = new ArrayCollection();
     }
 
     /**
-     * Возвращает идентификатор.
-     *
      * @return integer
      */
     public function getId()
@@ -81,9 +81,7 @@ class Tag
     }
 
     /**
-     * Устанавливает название.
-     *
-     * @param string $title Название
+     * @param string $title
      *
      * @return Tag
      */
@@ -95,8 +93,6 @@ class Tag
     }
 
     /**
-     * Возвращает название.
-     *
      * @return string
      */
     public function getTitle()
@@ -105,22 +101,6 @@ class Tag
     }
 
     /**
-     * Устанавливает дату создания.
-     *
-     * @param \DateTime $createdAt Дата создания
-     *
-     * @return Tag
-     */
-    private function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Возвращает дату создания.
-     *
      * @return \DateTime
      */
     public function getCreatedAt()
@@ -129,21 +109,6 @@ class Tag
     }
 
     /**
-     * Устанавливает дату последнего изменения.
-     *
-     * @param \DateTime $updatedAt Дата последнего изменения
-     * @return Tag
-     */
-    private function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Возвращает дату последнего изменения.
-     *
      * @return \DateTime
      */
     public function getUpdatedAt()
@@ -152,39 +117,31 @@ class Tag
     }
 
     /**
-     * Выполняется перед сохранением в БД.
-     *
      * @ORM\PrePersist
      */
     public function prePersistHandler()
     {
-        $this->setCreatedAt(new \DateTime());
+        $this->createdAt = new \DateTime();
     }
 
     /**
-     * Автоматическая установка даты обновления.
-     *
      * @ORM\PreUpdate
      */
     public function preUpdateHandler()
     {
-        $this->setUpdatedAt(new \DateTime());
+        $this->updatedAt = new \DateTime();
     }
 
     /**
-     * Преобразует в строку.
-     *
      * @return string
      */
     public function __toString()
     {
-        return $this->getTitle();
+        return $this->title;
     }
 
     /**
-     * Добавляет свзяь.
-     *
-     * @param TagRelation $relation Связь
+     * @param TagRelation $relation
      *
      * @return Tag
      */
@@ -196,9 +153,7 @@ class Tag
     }
 
     /**
-     * Удаляет свзяь.
-     *
-     * @param TagRelation $relation Связь
+     * @param TagRelation $relation
      *
      * @return Tag
      */
@@ -210,12 +165,30 @@ class Tag
     }
 
     /**
-     * Возвращает связи.
-     *
      * @return ArrayCollection
      */
     public function getRelations()
     {
         return $this->relations;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param int $priority
+     *
+     * @return Tag
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
+
+        return $this;
     }
 }

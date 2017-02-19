@@ -1,20 +1,14 @@
 <?php
-
 namespace SmartInformationSystems\TagsBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use SmartInformationSystems\TagsBundle\Form\Type\TagRelationsType;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
-/**
- * Администрирование заданий.
- *
- */
-class TagAdmin extends Admin
+class TagAdmin extends AbstractAdmin
 {
-    //protected $baseRouteName = 'sis_tags';
-
     /**
      * {@inheritdoc}
      */
@@ -22,9 +16,9 @@ class TagAdmin extends Admin
     {
         $formMapper
             ->add('title')
-            ->add('relations', 'sis_tag_relations_type', array(
-                'required' => FALSE,
-            ))
+            ->add('relations', TagRelationsType::class, [
+                'required' => false,
+            ])
         ;
     }
 

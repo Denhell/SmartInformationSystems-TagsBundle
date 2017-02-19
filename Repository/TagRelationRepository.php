@@ -1,14 +1,11 @@
 <?php
-
-namespace SmartInformationSystems\TagsBundle\Entity;
+namespace SmartInformationSystems\TagsBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use SmartInformationSystems\TagsBundle\Entity\Tag;
+use SmartInformationSystems\TagsBundle\Entity\TagRelation;
 
-/**
- * Репозиторий связей тегов.
- *
- */
 class TagRelationRepository extends EntityRepository
 {
     /**
@@ -21,11 +18,14 @@ class TagRelationRepository extends EntityRepository
      */
     public function getOneForTagAndEntity(Tag $tag, $entity)
     {
-        return $this->findOneBy(array(
+        /** @var TagRelation $tagRelation */
+        $tagRelation = $this->findOneBy([
             'tag' => $tag,
             'entityClass' => get_class($entity),
             'entityId' => $entity->getId(),
-        ));
+        ]);
+
+        return $tagRelation;
     }
 
     /**
@@ -38,13 +38,13 @@ class TagRelationRepository extends EntityRepository
     public function getForEntity($entity)
     {
         return new ArrayCollection($this->findBy(
-            array(
+            [
                 'entityClass' => get_class($entity),
                 'entityId' => $entity->getId(),
-            ),
-            array(
+            ],
+            [
                 'priority' => 'ASC',
-            )
+            ]
         ));
     }
 
