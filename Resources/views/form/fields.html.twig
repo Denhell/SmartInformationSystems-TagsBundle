@@ -8,7 +8,7 @@
                     tags: true,
                     tokenSeparators: [','],
                     minimumInputLength: 2,
-                    initSelection : function (element, callback) {
+                    initSelection: function (element, callback) {
                         var data = [];
                         $(element.val().split(',')).each(function () {
                             data.push({id: this, text: this});
@@ -55,7 +55,7 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block sis_tag_relations_type_widget %}
+{% block tag_relations_widget %}
     {% spaceless %}
         {% for o in objects %}
             {% if loop.first %}
