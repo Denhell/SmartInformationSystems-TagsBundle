@@ -3,6 +3,7 @@ namespace SmartInformationSystems\TagsBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use SmartInformationSystems\TagsBundle\Common\AbstractTaggedEntity;
 use SmartInformationSystems\TagsBundle\Entity\Tag;
 
 class TagRepository extends EntityRepository
@@ -17,14 +18,15 @@ class TagRepository extends EntityRepository
      */
     public function search($query, $limit = 10)
     {
-        $query = $this->createQueryBuilder('t')
+        $qb = $this->createQueryBuilder('t');
+        $qb
             ->where('t.title like :title')
             ->setParameter('title', '%' . $query . '%')
             ->orderBy('t.title', 'ASC')
             ->setMaxResults($limit)
-            ->getQuery();
+        ;
 
-        return $query->getResult();
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -47,21 +49,44 @@ class TagRepository extends EntityRepository
     /**
      * Возвращает список тегов для сущности.
      *
-     * @param object $entity Сущность
+     * @param AbstractTaggedEntity $entity Сущность
      *
-     * @return ArrayCollection|Tag[]
+     * @return Tag[]
      */
     public function getForEntity($entity)
     {
-        return new ArrayCollection(
-            $this->createQueryBuilder('t')
-                ->leftJoin('t.relations', 'r')
-                ->where('r.entityClass = :entity_class and r.entityId = :entity_id')
-                ->setParameter('entity_class', get_class($entity))
-                ->setParameter('entity_id', $entity->getId())
-                ->orderBy('r.priority', 'ASC')
-                ->getQuery()
-                ->getResult()
-        );
+        $qb = $this->createQueryBuilder('t');
+        $qb
+            ->leftJoin('t.relations', 'r')
+            ->andWhere($qb->expr()->eq('r.entityClass', ':entity_class'))
+            ->andWhere($qb->expr()->eq('r.entityId', ':entity_id'))
+            ->setParameters([
+                'entity_class' => \get_class($entity),
+                'entity_id' => $entity->getId(),
+            ])
+            ->orderBy('r.priority', 'ASC')
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Возвращает список тегов для всех сущностей класса
+     *
+     * @param string $class
+     *
+     * @return Tag[]
+     */
+    public function getForClass($class)
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb
+            ->leftJoin('t.relations', 'r')
+            ->andWhere($qb->expr()->eq('r.entityClass', ':entity_class'))
+            ->setParameter('entity_class', $class)
+            ->orderBy('t.title', 'ASC')
+        ;
+
+        return $qb->getQuery()->getResult();
     }
 }
