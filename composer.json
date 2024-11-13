@@ -1,5 +1,5 @@
 {
-    "name" : "denhell/smartinformationsystems-tags-bundle",
+    "name" : "denhell/smartinformationsystems-tagsbundle",
     "description" : "Tags bundle",
     "type" : "symfony-bundle",
     "authors" : [
