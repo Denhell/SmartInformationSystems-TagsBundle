@@ -5,84 +5,72 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Связи с тегами
- *
- * @ORM\Entity(repositoryClass="SmartInformationSystems\TagsBundle\Repository\TagRelationRepository")
- * @ORM\Table(
- *   name="sis_tag_relation",
- *   uniqueConstraints={@ORM\UniqueConstraint(name="ui_relation", columns={"tag_id", "entity_class", "entity_id"})},
- *   indexes={
- *     @ORM\Index(name="i_entity", columns={"entity_class", "entity_id"}),
- *   }
- * )
- * @ORM\HasLifecycleCallbacks()
  */
+#[ORM\Table(name: 'sis_tag_relation')]
+#[ORM\Index(name: 'i_entity', columns: ['entity_class', 'entity_id'])]
+#[ORM\UniqueConstraint(name: 'ui_relation', columns: ['tag_id', 'entity_class', 'entity_id'])]
+#[ORM\Entity(repositoryClass: \SmartInformationSystems\TagsBundle\Repository\TagRelationRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class TagRelation
 {
     /**
      * Идентификатор
      *
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    private ?int $id = null;
 
     /**
      * Тег
      *
      * @var Tag
-     *
-     * @ORM\ManyToOne(targetEntity="Tag", inversedBy="relations")
-     * @ORM\JoinColumn(referencedColumnName="id", nullable=false)
      */
-    private $tag;
+    #[ORM\JoinColumn(referencedColumnName: 'id', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: \Tag::class, inversedBy: 'relations')]
+    private ?\SmartInformationSystems\TagsBundle\Entity\Tag $tag = null;
 
     /**
      * Класс связанноый сущности
      *
      * @var string
-     *
-     * @ORM\Column(type="string")
      */
-    private $entityClass;
+    #[ORM\Column(type: 'string')]
+    private ?string $entityClass = null;
 
     /**
      * Идентификатор связанноый сущности
      *
      * @var integer
-     *
-     * @ORM\Column(type="integer", options={"unsigned"=true})
      */
-    private $entityId;
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    private ?int $entityId = null;
 
     /**
      * Приоритет
      *
      * @var integer
-     *
-     * @ORM\Column(type="integer")
      */
-    private $priority;
+    #[ORM\Column(type: 'integer')]
+    private ?int $priority = null;
 
     /**
      * Дата создания
      *
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
+     * @var \DateTimeInterface
      */
-    private $createdAt;
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $createdAt = null;
 
     /**
      * Дата последнего изменения
      *
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTimeInterface
      */
-    private $updatedAt;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
 
     /**
      * @return integer
@@ -190,17 +178,13 @@ class TagRelation
         return $this->updatedAt;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function prePersistHandler()
     {
         $this->createdAt = new \DateTime();
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
+    #[ORM\PreUpdate]
     public function preUpdateHandler()
     {
         $this->updatedAt = new \DateTime();

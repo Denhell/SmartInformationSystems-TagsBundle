@@ -6,59 +6,53 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Тег
- *
- * @ORM\Entity(repositoryClass="SmartInformationSystems\TagsBundle\Repository\TagRepository")
- * @ORM\Table(name="sis_tag")
- * @ORM\HasLifecycleCallbacks()
  */
+#[ORM\Table(name: 'sis_tag')]
+#[ORM\Entity(repositoryClass: \SmartInformationSystems\TagsBundle\Repository\TagRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Tag
 {
     /**
      * Идентификатор
      *
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    private ?int $id = null;
 
     /**
      * Название
      *
      * @var string
-     *
-     * @ORM\Column(type="string", unique=true)
      */
-    private $title;
+    #[ORM\Column(type: 'string', unique: true)]
+    private ?string $title = null;
 
     /**
      * Дата создания
      *
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
+     * @var \DateTimeInterface
      */
-    private $createdAt;
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $createdAt = null;
 
     /**
      * Дата последнего изменения
      *
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTimeInterface
      */
-    private $updatedAt;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
 
     /**
      * Связи
      *
      * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="TagRelation", mappedBy="tag")
      */
-    private $relations;
+    #[ORM\OneToMany(targetEntity: \TagRelation::class, mappedBy: 'tag')]
+    private \Doctrine\Common\Collections\Collection $relations;
 
     /**
      * Приоритет. Не сохраняется в БД
@@ -116,17 +110,13 @@ class Tag
         return $this->updatedAt;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function prePersistHandler()
     {
         $this->createdAt = new \DateTime();
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
+    #[ORM\PreUpdate]
     public function preUpdateHandler()
     {
         $this->updatedAt = new \DateTime();
