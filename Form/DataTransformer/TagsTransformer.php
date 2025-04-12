@@ -30,7 +30,7 @@ class TagsTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($tags)
+    public function transform(mixed $value): mixed
     {
         if (empty($tags)) {
             return '';
@@ -48,7 +48,7 @@ class TagsTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function reverseTransform($value)
+    public function reverseTransform(mixed $value): mixed
     {
         if (empty($value) || !is_string($value)) {
             return [];
